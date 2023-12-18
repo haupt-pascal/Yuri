@@ -1,6 +1,6 @@
-import bitcoin
-import requests
 import threading
+from cryptofuzz import getPrivateKey, PrivateKey_To_Address
+
 def check_address(address):
     with open('rich.txt', 'r') as file:
         for line in file:
@@ -9,10 +9,9 @@ def check_address(address):
     return False
 
 def generate_address():
-    private_key = bitcoin.random_key()
-    public_key = bitcoin.privkey_to_pubkey(private_key)
-    address = bitcoin.pubkey_to_address(public_key)
-    print(private_key)
+    private_key = getPrivateKey()
+    address = PrivateKey_To_Address(private_key, compress=True)
+    print(f"Generated address: {address}")
     return private_key, address
 
 def search_address():
@@ -35,5 +34,3 @@ for _ in range(4):
 
 for thread in threads:
     thread.join()
-
-
